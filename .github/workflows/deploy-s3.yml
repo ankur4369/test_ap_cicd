@@ -36,8 +36,8 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -var="iam_role_arn=${{ secrets.GLUE_ROLE_ARN }}"
 
-      # - name: Terraform Apply
-      #   run: terraform apply -auto-approve -var="iam_role_arn=${{ secrets.GLUE_ROLE_ARN }}"
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -var="iam_role_arn=${{ secrets.GLUE_ROLE_ARN }}"
 
-      - name: Terraform Destroy
-        run: terraform destroy
+      # - name: Terraform Destroy
+      #   run: terraform destroy
