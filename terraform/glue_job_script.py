@@ -11,6 +11,6 @@ spark = glueContext.spark_session
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
 
-print("Hello from AWS and Ankur in DLG Office")
+print("Hello from AWS Glue ETL Job and Ankur in DLG Office")
 
 job.commit()
