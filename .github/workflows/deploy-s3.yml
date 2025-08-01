@@ -38,3 +38,6 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -var="iam_role_arn=${{ secrets.GLUE_ROLE_ARN }}"
+
+      - name: Terraform Delete
+        run: terraform delete
