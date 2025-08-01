@@ -38,3 +38,16 @@ resource "aws_glue_job" "glue_job" {
     "--job-language" = "python"
   }
 }
+
+resource "aws_glue_trigger" "daily_trigger" {
+  name = "${var.job_name}-daily-trigger"
+  type = "SCHEDULED"
+  schedule = "cron(0 9 * * ? *)"
+
+  actions {
+    job_name = aws_glue_job.glue_job.name
+  }
+
+  start_on_creation = true
+  enabled = true
+}
