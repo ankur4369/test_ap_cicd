@@ -34,7 +34,7 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -var="iam_role_arn=${{ secrets.GLUE_ROLE_ARN }}"
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -var="iam_role_arn=${{ secrets.GLUE_ROLE_ARN }}"
