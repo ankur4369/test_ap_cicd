@@ -32,7 +32,6 @@ resource "aws_glue_job" "glue_job" {
   glue_version = "4.0"
   max_capacity = 2.0
   timeout = 10
-  number_of_retries = 1
 
   default_arguments = {
     "--TempDir" = "s3://${aws_s3_bucket.glue_bucket.id}/temp/"
