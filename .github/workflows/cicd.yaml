@@ -1,0 +1,26 @@
+name: AWS Code Deploy
+
+on:
+  push:
+    branches: [ "master" ]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::154989417037:role/GithubAdminRole
+          aws-region: us-east-1
+      
+      - name: Deploy
+        run: |
+          aws s3 ls
