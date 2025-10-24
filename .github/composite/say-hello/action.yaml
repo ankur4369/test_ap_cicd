@@ -13,11 +13,12 @@ inputs:
 
 runs:
   using: composite
-  shell: bash
-  
+
   steps:
     - name: Show the code purpose
       run: echo "The code welcomes the user ${{ inputs.name }}"
+      shell: bash
 
     - name: Say the greeting message
       run: echo "{{ inputs.message }}! Welcome to the team, ${{ inputs.name }}"
+      shell: bash
