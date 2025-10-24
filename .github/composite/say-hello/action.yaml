@@ -9,7 +9,8 @@ inputs:
   message:
     description: This is the message we want to use to greet the user
     type: string
-    default: Hello
+    required: false
+    default: "Hello"
 
 runs:
   using: composite
