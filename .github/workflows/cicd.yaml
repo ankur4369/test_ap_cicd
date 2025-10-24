@@ -15,6 +15,12 @@ jobs:
       matrix:
         my-custom-input: ["Ankur", "Pandey", "Ankur Pandey"]
     steps:
+      - name: Welcome
+        uses: ../.github/composite/say-hello
+        with:
+          name: "Ankur"
+          message: "Namaste"
+      
       - name: Checkout code
         uses: actions/checkout@v4
 

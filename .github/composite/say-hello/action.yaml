@@ -1,0 +1,22 @@
+name: Say Hello
+description: The composite workflow is used to say hello to the user
+
+inputs:
+  name:
+    description: This is the name of the user
+    type: string
+    required: true
+  message:
+    description: This is the message we want to use to greet the user
+    type: string
+    default: Hello
+
+runs:
+  using: composite
+
+  steps:
+    - name: Show the code purpose
+      run: echo "The code welcomes the user ${{ inputs.name }}"
+
+    - name: Say the greeting message
+      run: echo "{{ inputs.message }}! Welcome to the team, ${{ inputs.name }}"
