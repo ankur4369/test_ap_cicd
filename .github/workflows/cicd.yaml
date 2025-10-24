@@ -33,6 +33,11 @@ jobs:
         with:
           name: "Ankit"
 
+      - name: Check outputs
+        run: |
+          echo "${{ steps.hello-ankur.outputs.dad_name }} is ${{ steps.hello-ankur.outputs.age }} years old!"
+          echo "${{ steps.hello-ankit.outputs.dad_name }} is ${{ steps.hello-ankit.outputs.age }} years old!"
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
