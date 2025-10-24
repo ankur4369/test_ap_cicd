@@ -38,12 +38,32 @@ jobs:
           echo "${{ steps.hello-ankur.outputs.dad_name }} is ${{ steps.hello-ankur.outputs.age }} years old!"
           echo "${{ steps.hello-ankit.outputs.dad_name }} is ${{ steps.hello-ankit.outputs.age }} years old!"
 
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.5
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::154989417037:role/GithubAdminRole
           aws-region: us-east-1
+
+      - name: Terraform Init
+        run: terraform init
       
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+      
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+      
+      - name: Terraform Output
+        run: terraform output
+
       - name: Deploy
         run: |
           echo ${{ matrix.my-custom-input }}
