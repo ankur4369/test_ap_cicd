@@ -11,6 +11,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    outputs:
+      papa_name: ${{ steps.hello-ankit.outputs.dad_name }}
     strategy:
       matrix:
         my-custom-input: ["Ankur"]
@@ -47,14 +49,6 @@ jobs:
     needs: deploy
     uses: ./.github/workflows/reusable-workflow.yaml
     with:
-      name: ${{ steps.hello-ankit.outputs.dad_name }}
+      name: ${{ needs.deploy.outputs.papa_name }}
       age: 50
       message: "Kaisan bata? "
-
-  wish-ankur-job:
-    name: Wish Job
-    needs: deploy
-    uses: ./.github/workflows/reusable-workflow.yaml
-    with:
-      name: ${{ steps.hello-ankur.outputs.dad_name }}
-      age: 65
