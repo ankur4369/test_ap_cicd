@@ -11,14 +11,29 @@ inputs:
     type: string
     default: "Hello"
 
+outputs:
+  dad_name:
+    description: 'Father name'
+    value: ${{ steps.get_father.outputs.father_name }}
+  
+  age:
+    description: 'Age of the user'
+    value: ${{ steps.age_step.outputs.age }}
+
 runs:
   using: composite
 
   steps:
     - name: Show the code purpose
-      run: echo "The code welcomes the user ${{ inputs.name }}"
+      id: age_step
+      run: |
+        echo "The code welcomes the user ${{ inputs.name }}"
+        echo "age=35" >> "$GITHUB_OUTPUT"
       shell: bash
 
     - name: Say the greeting message
-      run: echo "${{ inputs.message }}! Welcome to the team, ${{ inputs.name }}"
+      id: get_father
+      run: |
+        echo "${{ inputs.message }}! Welcome to the team, ${{ inputs.name }}"
+        echo "father_name=Rajesh Kumar Pandey is the father of ${{ inputs.name }}" >> "$GITHUB_OUTPUT"
       shell: bash
