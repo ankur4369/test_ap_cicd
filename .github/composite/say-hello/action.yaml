@@ -13,7 +13,8 @@ inputs:
 
 runs:
   using: composite
-
+  shell: bash
+  
   steps:
     - name: Show the code purpose
       run: echo "The code welcomes the user ${{ inputs.name }}"
