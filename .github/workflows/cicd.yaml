@@ -42,6 +42,7 @@ jobs:
 
   wish-job:
     name: Wish Job
+    needs: deploy
     uses: ./.github/workflows/reusable-workflow.yaml
     with:
       name: "Rajesh"
