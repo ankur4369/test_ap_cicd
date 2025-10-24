@@ -1,0 +1,35 @@
+name: My First Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        description: 'This is the name of the user'
+        required: true
+      
+      age:
+        description: 'This signifes the age of the user'
+        
+      message:
+        description: 'This is how to greet the user'
+        default: "Hello"
+
+jobs:
+  welcome-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Welcome the user
+        run: echo "Welcome to the team, ${{ inputs.name }}!"
+        shell: bash
+
+  wish-happy-birthday-job:
+
+    steps:
+      - name: Say hello
+        run: echo "${{ inputs.message }}! You are most welcome to the team, ${{ inputs.name }}"
+        shell: bash
+
+      - name: Wish happy birthday
+        run: echo "Happy birthday, ${{ inputs.name }}! You just turned ${{ inputs.age }}!"
+        shell: bash

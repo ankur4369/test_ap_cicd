@@ -39,3 +39,11 @@ jobs:
         run: |
           echo ${{ matrix.my-custom-input }}
           aws s3 ls
+
+  wish-job:
+    name: Wish Job
+    uses: ./.github/workflows/reusable-workflow.yaml
+    with:
+      name: "Rajesh"
+      age: 50
+      message: "Kaisan bata? "
