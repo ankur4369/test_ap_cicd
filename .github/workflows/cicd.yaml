@@ -19,12 +19,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Welcome
+        id: hello-ankur
         uses: ./.github/composite/say-hello
         with:
           name: "Ankur"
           message: "Namaste"
       
       - name: Welcome
+        id: hello-ankit
         uses: ./.github/composite/say-hello
         with:
           name: "Ankit"
@@ -40,11 +42,19 @@ jobs:
           echo ${{ matrix.my-custom-input }}
           aws s3 ls
 
-  wish-job:
+  wish-ankit-job:
     name: Wish Job
     needs: deploy
     uses: ./.github/workflows/reusable-workflow.yaml
     with:
-      name: "Rajesh"
+      name: ${{ steps.hello-ankit.outputs.dad_name }}
       age: 50
       message: "Kaisan bata? "
+
+  wish-ankur-job:
+    name: Wish Job
+    needs: deploy
+    uses: ./.github/workflows/reusable-workflow.yaml
+    with:
+      name: ${{ steps.hello-ankur.outputs.dad_name }}
+      age: 65
