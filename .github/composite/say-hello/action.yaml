@@ -9,7 +9,6 @@ inputs:
   message:
     description: This is the message we want to use to greet the user
     type: string
-    required: false
     default: "Hello"
 
 runs:

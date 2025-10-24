@@ -24,6 +24,11 @@ jobs:
           name: "Ankur"
           message: "Namaste"
       
+      - name: Welcome
+        uses: ./.github/composite/say-hello
+        with:
+          name: "Ankit"
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
