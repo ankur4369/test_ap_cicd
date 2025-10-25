@@ -1,5 +1,6 @@
 variable "file_name" {
     description = "Name of the file"
+    default = "./hello.txt"
 }
 
 variable "content" {
