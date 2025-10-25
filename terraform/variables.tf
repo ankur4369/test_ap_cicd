@@ -1,5 +1,5 @@
 variable "file_name" {
-    default = "${path.module}/hello.txt"
+    description = "Name of the file"
 }
 
 variable "content" {

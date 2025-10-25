@@ -56,6 +56,6 @@ resource "aws_instance" "example" {
 
 
 resource "local_file" "example" {
-    filename = local.filename
+    filename = "${path.module}/hello.txt"
     content = local.content
 }
