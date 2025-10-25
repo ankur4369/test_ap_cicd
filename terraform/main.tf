@@ -39,10 +39,15 @@ resource "aws_security_group" "ec2_sg" {
     }
 }
 
+resource "aws_key_pair" "my_key" {
+  key_name   = "my-first-key"
+  public_key = file("~/.ssh/id_rsa.pub")  # path to your SSH public key
+}
+
 resource "aws_instance" "example" {
     ami = var.ami_id
     instance_type = var.instance_type
-    key_name = var.key_name
+    key_name = aws_key_pair.my_key.key_name
     vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
     user_data = <<-EOF
