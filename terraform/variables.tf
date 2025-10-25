@@ -1,5 +1,5 @@
 variable "file_name" {
-    default = "/Users/ankur.pandey1/Desktop/project/my_own/test_ap_cicd/terraform/hello.txt"
+    default = "${path.module}/hello.txt"
 }
 
 variable "content" {
