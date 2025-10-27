@@ -3,6 +3,10 @@ name: Destroy AWS Resources
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+  
 jobs:
   delete_aws_resources:
     runs-on: ubuntu-latest
