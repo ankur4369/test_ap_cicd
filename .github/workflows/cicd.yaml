@@ -62,7 +62,7 @@ jobs:
         working-directory: ./terraform
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply -lock=false -auto-approve tfplan
         working-directory: ./terraform
       
       - name: Terraform Output
