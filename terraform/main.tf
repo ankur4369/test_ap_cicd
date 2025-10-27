@@ -1,11 +1,7 @@
 terraform {
     required_providers {
-        local = {
-            source = "hashicorp/local"
-            version = "~> 2.0"
-        }
         aws = {
-            source = "hashicorp/aws"
+            source = "hashicorp/local"
             version = "~> 5.0"
         }
     }
@@ -15,75 +11,46 @@ provider "aws" {
     region = var.aws_region
 }
 
-resource "aws_dynamodb_table" "tf_lock" {
-  name         = "terraform-lock-table"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
+resource "aws_s3_object" "code_script" {
+    bucket = data.aws_s3_bucket.glue_bucket.bucket
+    key = "scripts/my-first-glue-code.py"
+    source = "${path.module}/my_first_glue_script.py"
+    etag = filemd5("${path.module}/my_first_glue_script.py")
 }
 
-resource "aws_security_group" "ec2_sg" {
-    name = "terraform-ec2-sg"
-    description = "Allow inbound SSH traffic"
+resource "aws_glue_job" "python_job" {
+    name = "daily-python-job"
+    role_arn = data.aws_iam_role.glue_role.arn
 
-    ingress {
-        from_port = 22
-        to_port = 22
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+    command {
+        name = "glueetl"
+        script_location = "s3://${data.aws_s3_bucket.glue_bucket.bucket}/${aws_s3_object.code_script.key}"
+        python_version = "3"
     }
 
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
+    glue_version = "3.0"
+    max_capacity = 1.0
+    timeout = 10
+
+    execution_property {
+        max_concurrent_runs = 1
     }
 
-    tags = {
-        Name = "cpc-ec2-sg"
+    default_arguments = {
+        "--job-language" = "python"
+        "--enable-continuous-cloudwatch-log" = "true"
+        "--enable-metrics" = "true"
     }
 }
 
-# Generate a new SSH key pair
-resource "tls_private_key" "generated_key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
+resource "aws_glue_trigger" "daily_trigger" {
+    name = "daily-python-trigger"
+    type = "SCHEDULED"
+    schedule = "cron(15 7 * * ? *)"
 
-# Create AWS key pair using the generated public key
-resource "aws_key_pair" "terraform_key" {
-  key_name   = "terraform-generated-key"
-  public_key = tls_private_key.generated_key.public_key_openssh
-}
-
-resource "aws_instance" "example" {
-    ami = var.ami_id
-    instance_type = var.instance_type
-    key_name = aws_key_pair.terraform_key.key_name
-    vpc_security_group_ids = [aws_security_group.ec2_sg.id]
-
-    user_data = <<-EOF
-            #!/bin/bash
-            echo "Hello from Terraform EC2 instance for Ankur Pandey DLG Swan lane Office" > /home/ec2-user/hello.txt
-            EOF
-    tags = {
-        name = local.instance_name
+    actions {
+        job_name = aws_glue_job.python_job.name
     }
-}
 
-# Optional: Save the private key locally
-resource "local_file" "private_key" {
-  content  = tls_private_key.generated_key.private_key_pem
-  filename = "${path.module}/terraform-generated-key.pem"
-  file_permission = "0600"
-}
-
-resource "local_file" "example" {
-    filename = "${path.module}/hello.txt"
-    content = local.content
+    start_on_creation = true
 }
