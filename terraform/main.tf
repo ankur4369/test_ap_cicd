@@ -39,15 +39,22 @@ resource "aws_security_group" "ec2_sg" {
     }
 }
 
-resource "aws_key_pair" "my_key" {
-  key_name   = "my-first-key"
-  public_key = file("~/.ssh/id_rsa.pub")  # path to your SSH public key
+# Generate a new SSH key pair
+resource "tls_private_key" "generated_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+# Create AWS key pair using the generated public key
+resource "aws_key_pair" "terraform_key" {
+  key_name   = "terraform-generated-key"
+  public_key = tls_private_key.generated_key.public_key_openssh
 }
 
 resource "aws_instance" "example" {
     ami = var.ami_id
     instance_type = var.instance_type
-    key_name = aws_key_pair.my_key.key_name
+    key_name = aws_key_pair.terraform_key.key_name
     vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
     user_data = <<-EOF
@@ -59,6 +66,12 @@ resource "aws_instance" "example" {
     }
 }
 
+# Optional: Save the private key locally
+resource "local_file" "private_key" {
+  content  = tls_private_key.generated_key.private_key_pem
+  filename = "${path.module}/terraform-generated-key.pem"
+  file_permission = "0600"
+}
 
 resource "local_file" "example" {
     filename = "${path.module}/hello.txt"

@@ -12,3 +12,11 @@ output "local_file_path" {
     description = "Path of the local file"
     value = local.filename
 }
+
+output "ssh_private_key_path" {
+  value = local_file.private_key.filename
+}
+
+output "ssh_command" {
+  value = "ssh -i ${local_file.private_key.filename} ec2-user@${aws_instance.example.public_ip}"
+}
