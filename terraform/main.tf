@@ -12,7 +12,7 @@ provider "aws" {
 }
 
 resource "aws_s3_object" "code_script" {
-    bucket = data.aws_s3_bucket.glue_bucket.bucket
+    bucket = var.s3_code_bucket
     key = "scripts/my-first-glue-code.py"
     source = "${path.module}/my_first_glue_script.py"
     etag = filemd5("${path.module}/my_first_glue_script.py")

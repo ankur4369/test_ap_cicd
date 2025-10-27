@@ -3,5 +3,5 @@ data "aws_iam_role" "glue_role" {
 }
 
 data "aws_s3_bucket" "glue_bucket" {
-    bucket = "cpc-ankurp-tf-bucket-1"
+    bucket = "cpc-ankurp-tf-bucket"
 }
