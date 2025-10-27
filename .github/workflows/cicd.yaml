@@ -57,12 +57,12 @@ jobs:
         run: terraform validate
         working-directory: ./terraform
 
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan
-        working-directory: ./terraform
-
       - name: Terraform Destroy
         run: terraform destroy
+        working-directory: ./terraform
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
         working-directory: ./terraform
 
       - name: Terraform Apply
