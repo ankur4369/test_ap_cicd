@@ -5,5 +5,5 @@ variable "aws_region" {
 
 variable "s3_code_bucket" {
     description = "Region of deployment"
-    default = "cpc-ankurp-tf-bucket-1"
+    default = "cpc-ankurp-tf-bucket"
 }
