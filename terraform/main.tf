@@ -16,7 +16,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "tf_state" {
-  bucket = "my-terraform-state-bucket"
+  bucket = "cpc-ankurp-tf-bucket"
   versioning {
     enabled = true
   }
