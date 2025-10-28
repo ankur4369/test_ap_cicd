@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   delete_aws_resources:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Welcome
         run: echo "Welcome to delete resources"
